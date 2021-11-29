@@ -1,4 +1,4 @@
-defmodule Main do
+defmodule Tictactoe do
   @moduledoc """
   Documentation for `Main`.
   """
