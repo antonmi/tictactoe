@@ -26,7 +26,7 @@ defmodule Tictactoe.Games do
 
   def assign_second_player(game, user_uuid) do
     game
-    |> Game.changeset(%{user_o_uuid: user_uuid, })
+    |> Game.changeset(%{user_o_uuid: user_uuid})
     |> Repo.update()
   end
 
@@ -53,6 +53,7 @@ defmodule Tictactoe.Games do
   def game_data(game) do
     user_x = Users.find(game.user_x_uuid)
     user_o = if game.user_o_uuid, do: Users.find(game.user_o_uuid), else: %{}
+
     %{
       game: Map.take(game, [:uuid, :field, :user_x, :user_o, :turn_uuid, :status]),
       user_o: Map.take(user_o, [:uuid, :name]),

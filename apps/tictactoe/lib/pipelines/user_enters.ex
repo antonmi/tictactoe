@@ -47,6 +47,7 @@ defmodule Tictactoe.Pipelines.UserEnters do
     case Users.find(token) do
       %User{} = user ->
         %{event | user: user}
+
       nil ->
         done!(%{event | error: :no_such_user})
     end
@@ -61,6 +62,7 @@ defmodule Tictactoe.Pipelines.UserEnters do
     game = Games.pending_game_for_user(user.uuid)
     %{event | game: game}
   end
+
   def find_pending_game_if_no_game(%__MODULE__{game: _game} = event, _opts), do: event
 
   def if_there_is_game(%__MODULE__{game: nil}, _opts), do: false
@@ -88,6 +90,7 @@ defmodule Tictactoe.Pipelines.UserEnters do
     case Users.create(username) do
       {:ok, %User{} = user} ->
         %{event | user: user}
+
       {:error, _any} ->
         done!(%{event | error: :invalid_user_data})
     end
@@ -97,6 +100,7 @@ defmodule Tictactoe.Pipelines.UserEnters do
     game = Games.find_free_game()
     %{event | game: game}
   end
+
   def find_free_game(%__MODULE__{game: _game} = event, _opts), do: event
 
   def is_there_free_game?(%__MODULE__{game: nil}, _opts), do: :no

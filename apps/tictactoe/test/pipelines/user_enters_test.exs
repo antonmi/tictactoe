@@ -9,16 +9,22 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     Manager.start(UserEnters)
   end
 
+  def process_event(event) do
+    [result] =
+      [event]
+      |> Manager.stream_to(UserEnters)
+      |> Enum.to_list()
+
+    result
+  end
+
   describe "new user without token/uuid" do
     setup do
       %{event: %UserEnters{username: "john"}}
     end
 
     test "it creates a new user and a game", %{event: event} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john"
       assert result.game
@@ -35,10 +41,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user and a game", %{event: event} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.error == :invalid_user_data
     end
@@ -51,10 +54,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user with postix", %{event: event} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john_1"
       assert result.game
@@ -73,10 +73,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user find existing game for him", %{event: event, game: game} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john"
       assert result.game.uuid == game.uuid
@@ -94,10 +91,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it finds the user and creates a new game", %{event: event} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john"
       assert result.game
@@ -115,19 +109,13 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it finds the user and creates a new game", %{event: event} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.error == :no_such_user
     end
 
     test "when token is not uuid" do
-      [result] =
-        [%UserEnters{token: "invalid_token"}]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(%UserEnters{token: "invalid_token"})
 
       assert result.error == :no_such_user
     end
@@ -141,10 +129,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it finds the user and his game", %{event: event, game: game} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john"
       assert result.game
@@ -166,10 +151,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it finds the user and his game", %{event: event, game: game} do
-      [result] =
-        [event]
-        |> Manager.stream_to(UserEnters)
-        |> Enum.to_list()
+      result = process_event(event)
 
       assert result.user.name == "john"
       assert result.game
