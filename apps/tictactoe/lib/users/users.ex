@@ -3,6 +3,15 @@ defmodule Tictactoe.Users do
 
   alias Tictactoe.{User, Repo}
 
+  def find(uuid) do
+    try do
+      Repo.get(User, uuid)
+    rescue
+      Ecto.Query.CastError ->
+        nil
+    end
+  end
+
   @spec create(String.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create(name) do
     %User{}
@@ -13,6 +22,6 @@ defmodule Tictactoe.Users do
   def where_name_starts_with(name) do
     like = "#{name}%"
 
-    Repo.all(from u in User, where: ilike(u.name, ^like))
+    Repo.all(from(u in User, where: ilike(u.name, ^like)))
   end
 end

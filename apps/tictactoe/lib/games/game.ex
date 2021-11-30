@@ -12,18 +12,22 @@ defmodule Tictactoe.Game do
 
   alias Tictactoe.{Game, Move}
 
+  @statuses ["pending", "active", "victory", "draw"]
+
   @primary_key {:uuid, :binary_id, autogenerate: true}
   schema "games" do
     field(:field, {:array, :integer}, default: [nil, nil, nil, nil, nil, nil, nil, nil, nil])
     field(:user_x_uuid, :binary_id)
     field(:user_o_uuid, :binary_id)
     field(:turn_uuid, :binary_id)
+    field(:status, :string, default: "pending")
   end
 
   def changeset(game, attrs \\ %{}) do
     game
-    |> Changeset.cast(attrs, [:field, :user_x_uuid, :user_o_uuid, :turn_uuid])
+    |> Changeset.cast(attrs, [:field, :user_x_uuid, :user_o_uuid, :turn_uuid, :status])
     |> Changeset.validate_required([:field, :user_x_uuid, :turn_uuid])
+    |> Changeset.validate_inclusion(:status, @statuses)
   end
 
   @spec validate_move(Game.t(), Move.t()) ::
