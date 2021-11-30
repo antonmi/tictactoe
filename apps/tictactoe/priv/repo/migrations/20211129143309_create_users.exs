@@ -9,5 +9,7 @@ defmodule Tictactoe.Repo.Migrations.CreateUsers do
           default: fragment("gen_random_uuid()")
       add :name, :string
     end
+
+    create index(:users, [:name])
   end
 end

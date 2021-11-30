@@ -9,4 +9,10 @@ defmodule Tictactoe.Users do
     |> User.changeset(%{name: name})
     |> Repo.insert()
   end
+
+  def where_name_starts_with(name) do
+    like = "#{name}%"
+
+    Repo.all(from u in User, where: ilike(u.name, ^like))
+  end
 end
