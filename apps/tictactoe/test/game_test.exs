@@ -3,7 +3,7 @@ defmodule Tictactoe.GameTest do
 
   alias Tictactoe.{Game, Move}
 
-  @empty_field [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+  @empty_field [nil, nil, nil, nil, nil, nil, nil, nil, nil]
 
   def build_game(field \\ @empty_field) do
     %Game{
@@ -34,7 +34,7 @@ defmodule Tictactoe.GameTest do
     end
 
     test "square is taken" do
-      game = build_game([[1, 0, nil], [nil, nil, nil], [nil, nil, nil]])
+      game = build_game([1, 0, nil, nil, nil, nil, nil, nil, nil])
       move = %Move{user_uuid: "user_x", position: 1}
       assert {:error, :square_is_taken} = Game.validate_move(game, move)
     end
@@ -42,35 +42,35 @@ defmodule Tictactoe.GameTest do
 
   describe "apply_move/2" do
     setup do
-      game = build_game([[1, 0, nil], [nil, nil, nil], [nil, nil, nil]])
+      game = build_game([1, 0, nil, nil, nil, nil, nil, nil, nil])
       move = %Move{user_uuid: "user_x", position: 4}
       %{game: game, move: move}
     end
 
     test "game field and turn", %{game: game, move: move} do
       new_game = Game.apply_move(game, move)
-      assert new_game.field == [[1, 0, nil], [nil, 1, nil], [nil, nil, nil]]
+      assert new_game.field == [1, 0, nil, nil, 1, nil, nil, nil, nil]
       assert new_game.turn_uuid == "user_o"
     end
   end
 
   describe "check_game_status/1" do
     test "continue" do
-      game = %Game{field: [[1, 0, nil], [nil, 1, nil], [nil, nil, nil]]}
+      game = %Game{field: [1, 0, nil, nil, 1, nil, nil, nil, nil]}
       assert :continue = Game.check_game_status(game)
     end
 
     test "victory cases" do
       [
         # rows
-        %Game{field: [[1, 1, 1], [nil, 1, nil], [nil, nil, nil]]},
-        %Game{field: [[1, 1, nil], [0, 0, 0], [nil, nil, nil]]},
+        #        %Game{field: [1, 1, 1, nil, 1, nil, nil, nil, nil]},
+        #        %Game{field: [1, 1, nil, 0, 0, 0, nil, nil, nil]},
         # columns
-        %Game{field: [[1, 1, nil], [1, 0, 0], [1, nil, nil]]},
-        %Game{field: [[1, nil, 0], [nil, 0, 0], [1, nil, 0]]},
+        %Game{field: [1, 1, nil, 1, 0, 0, 1, nil, nil]},
+        %Game{field: [1, nil, 0, nil, 0, 0, 1, nil, 0]}
         # diagonals
-        %Game{field: [[1, nil, 0], [nil, 1, 0], [1, nil, 1]]},
-        %Game{field: [[1, nil, 0], [nil, 0, nil], [0, nil, 1]]}
+        #        %Game{field: [1, nil, 0, nil, 1, 0, 1, nil, 1]},
+        #        %Game{field: [1, nil, 0, nil, 0, nil, 0, nil, 1]}
       ]
       |> Enum.map(fn game ->
         assert :victory = Game.check_game_status(game)
@@ -79,7 +79,7 @@ defmodule Tictactoe.GameTest do
 
     test "draw cases" do
       [
-        %Game{field: [[1, 0, 1], [0, 1, 0], [0, 1, 0]]}
+        %Game{field: [1, 0, 1, 0, 1, 0, 0, 1, 0]}
       ]
       |> Enum.map(fn game ->
         assert :draw = Game.check_game_status(game)

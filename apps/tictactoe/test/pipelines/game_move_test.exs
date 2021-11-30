@@ -19,7 +19,7 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
   end
 
   setup do
-    game = build_game([[1, nil, nil], [nil, nil, nil], [nil, nil, nil]])
+    game = build_game([1, nil, nil, nil, nil, nil, nil, nil, nil])
     move = %Move{user_uuid: "user_x", position: 4}
     %{game: game, move: move}
   end
@@ -36,12 +36,12 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
       assert is_nil(move.error)
       assert move.result == :continue
 
-      assert game.field == [[1, nil, nil], [nil, 1, nil], [nil, nil, nil]]
+      assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, nil]
       assert game.turn_uuid == "user_o"
     end
 
     test "victory case" do
-      game = build_game([[1, nil, nil], [nil, 1, nil], [nil, nil, nil]])
+      game = build_game([1, nil, nil, nil, 1, nil, nil, nil, nil])
       move = %Move{user_uuid: "user_x", position: 8}
 
       [%GameMove{game: game, move: move}] =
@@ -52,7 +52,7 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
       assert is_nil(move.error)
       assert move.result == :victory
 
-      assert game.field == [[1, nil, nil], [nil, 1, nil], [nil, nil, 1]]
+      assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, 1]
       assert game.turn_uuid == "user_o"
     end
   end
@@ -68,7 +68,7 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
 
       assert new_move.error == :square_is_taken
 
-      assert new_game.field == [[1, nil, nil], [nil, nil, nil], [nil, nil, nil]]
+      assert new_game.field == [1, nil, nil, nil, nil, nil, nil, nil, nil]
       assert new_game.turn_uuid == "user_x"
     end
   end

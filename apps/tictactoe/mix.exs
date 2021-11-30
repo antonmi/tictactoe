@@ -18,6 +18,7 @@ defmodule Main.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {Tictactoe.Application, []},
       extra_applications: [:logger]
     ]
   end
@@ -25,7 +26,9 @@ defmodule Main.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:alf, git: "https://github.com/antonmi/alf.git", branch: "main"}
+      {:alf, git: "https://github.com/antonmi/alf.git", branch: "main"},
+      {:ecto_sql, "~> 3.7"},
+      {:postgrex, "~> 0.15"}
     ]
   end
 end

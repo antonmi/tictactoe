@@ -1,19 +1,30 @@
 defmodule Tictactoe.Game do
-  defstruct uuid: "",
-            field: [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]],
-            user_x_uuid: "",
-            user_o_uuid: "",
-            turn_uuid: ""
+  alias Ecto.Changeset
+  use Ecto.Schema
 
   @type t :: %__MODULE__{
           uuid: String.t(),
-          field: list(list()),
+          field: list(integer()),
           user_x_uuid: String.t(),
           user_o_uuid: String.t(),
           turn_uuid: String.t()
         }
 
   alias Tictactoe.{Game, Move}
+
+  @primary_key {:uuid, :binary_id, autogenerate: true}
+  schema "games" do
+    field(:field, {:array, :integer}, default: [nil, nil, nil, nil, nil, nil, nil, nil, nil])
+    field(:user_x_uuid, :binary_id)
+    field(:user_o_uuid, :binary_id)
+    field(:turn_uuid, :binary_id)
+  end
+
+  def changeset(game, attrs \\ %{}) do
+    game
+    |> Changeset.cast(attrs, [:field, :user_x_uuid, :user_o_uuid, :turn_uuid])
+    |> Changeset.validate_required([:field, :user_x_uuid, :turn_uuid])
+  end
 
   @spec validate_move(Game.t(), Move.t()) ::
           :ok
@@ -31,12 +42,7 @@ defmodule Tictactoe.Game do
   @spec apply_move(Game.t(), Move.t()) :: Game.t()
   def apply_move(game, move) do
     number = number_to_put_on_the_field(game)
-
-    new_field =
-      game.field
-      |> List.flatten()
-      |> List.update_at(move.position, fn nil -> number end)
-      |> Enum.chunk_every(3)
+    new_field = List.update_at(game.field, move.position, fn nil -> number end)
 
     %{toggle_turn(game) | field: new_field}
   end
@@ -58,10 +64,7 @@ defmodule Tictactoe.Game do
   end
 
   defp validate_square(%Game{field: field}, %Move{position: position}) do
-    in_position =
-      field
-      |> List.flatten()
-      |> Enum.at(position)
+    in_position = Enum.at(field, position)
 
     if is_nil(in_position), do: :ok, else: {:error, :square_is_taken}
   end
@@ -90,14 +93,14 @@ defmodule Tictactoe.Game do
   end
 
   defp check_victory(%Game{field: field}) do
-    any_row? = Enum.any?(field, &(Enum.uniq(&1) in [[0], [1]]))
-    any_column? = Enum.any?(transpose(field), &(Enum.uniq(&1) in [[0], [1]]))
-    flattened = List.flatten(field)
+    matrix = Enum.chunk_every(field, 3)
+    any_row? = Enum.any?(matrix, &(Enum.uniq(&1) in [[0], [1]]))
+    any_column? = Enum.any?(transpose(matrix), &(Enum.uniq(&1) in [[0], [1]]))
 
     any_diagonal? =
       [
-        [Enum.at(flattened, 0), Enum.at(flattened, 4), Enum.at(flattened, 8)],
-        [Enum.at(flattened, 2), Enum.at(flattened, 4), Enum.at(flattened, 6)]
+        [Enum.at(field, 0), Enum.at(field, 4), Enum.at(field, 8)],
+        [Enum.at(field, 2), Enum.at(field, 4), Enum.at(field, 6)]
       ]
       |> Enum.any?(&(Enum.uniq(&1) in [[0], [1]]))
 
