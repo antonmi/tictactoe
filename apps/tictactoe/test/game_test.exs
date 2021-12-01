@@ -57,23 +57,23 @@ defmodule Tictactoe.GameTest do
   describe "check_game_status/1" do
     test "continue" do
       game = %Game{field: [1, 0, nil, nil, 1, nil, nil, nil, nil]}
-      assert :continue = Game.check_game_status(game)
+      assert "continue" = Game.check_game_status(game)
     end
 
     test "victory cases" do
       [
         # rows
-        #        %Game{field: [1, 1, 1, nil, 1, nil, nil, nil, nil]},
-        #        %Game{field: [1, 1, nil, 0, 0, 0, nil, nil, nil]},
+        %Game{field: [1, 1, 1, nil, 1, nil, nil, nil, nil]},
+        %Game{field: [1, 1, nil, 0, 0, 0, nil, nil, nil]},
         # columns
         %Game{field: [1, 1, nil, 1, 0, 0, 1, nil, nil]},
-        %Game{field: [1, nil, 0, nil, 0, 0, 1, nil, 0]}
+        %Game{field: [1, nil, 0, nil, 0, 0, 1, nil, 0]},
         # diagonals
-        #        %Game{field: [1, nil, 0, nil, 1, 0, 1, nil, 1]},
-        #        %Game{field: [1, nil, 0, nil, 0, nil, 0, nil, 1]}
+        %Game{field: [1, nil, 0, nil, 1, 0, 1, nil, 1]},
+        %Game{field: [1, nil, 0, nil, 0, nil, 0, nil, 1]}
       ]
       |> Enum.map(fn game ->
-        assert :victory = Game.check_game_status(game)
+        assert "victory" = Game.check_game_status(game)
       end)
     end
 
@@ -82,7 +82,7 @@ defmodule Tictactoe.GameTest do
         %Game{field: [1, 0, 1, 0, 1, 0, 0, 1, 0]}
       ]
       |> Enum.map(fn game ->
-        assert :draw = Game.check_game_status(game)
+        assert "draw" = Game.check_game_status(game)
       end)
     end
   end

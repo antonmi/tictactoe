@@ -28,13 +28,13 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
     test "pipeline", %{game: game, move: move} do
       event = %GameMove{game: game, move: move}
 
-      [%GameMove{game: game, move: move}] =
+      [%GameMove{game: game, error: error, result: result}] =
         [event]
         |> Manager.stream_to(GameMove)
         |> Enum.to_list()
 
-      assert is_nil(move.error)
-      assert move.result == :continue
+      assert is_nil(error)
+      assert result == "continue"
 
       assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, nil]
       assert game.turn_uuid == "user_o"
@@ -44,13 +44,13 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
       game = build_game([1, nil, nil, nil, 1, nil, nil, nil, nil])
       move = %Move{user_uuid: "user_x", position: 8}
 
-      [%GameMove{game: game, move: move}] =
+      [%GameMove{game: game, error: error, result: result}] =
         [%GameMove{game: game, move: move}]
         |> Manager.stream_to(GameMove)
         |> Enum.to_list()
 
-      assert is_nil(move.error)
-      assert move.result == :victory
+      assert is_nil(error)
+      assert result == "victory"
 
       assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, 1]
       assert game.turn_uuid == "user_o"
@@ -61,12 +61,12 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
     test "invalid move", %{game: game} do
       move = %Move{user_uuid: "user_x", position: 0}
 
-      [%GameMove{game: new_game, move: new_move}] =
+      [%GameMove{game: new_game, error: error}] =
         [%GameMove{game: game, move: move}]
         |> Manager.stream_to(GameMove)
         |> Enum.to_list()
 
-      assert new_move.error == :square_is_taken
+      assert error == :square_is_taken
 
       assert new_game.field == [1, nil, nil, nil, nil, nil, nil, nil, nil]
       assert new_game.turn_uuid == "user_x"

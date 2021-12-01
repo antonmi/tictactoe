@@ -4,7 +4,16 @@ defmodule Tictactoe.Pipelines.GameMove do
   alias Tictactoe.{Game, Move}
 
   defstruct game: %Game{},
-            move: %Move{}
+            move: %Move{},
+            result: nil,
+            error: nil
+
+  @type t :: %__MODULE__{
+          game: Game.t(),
+          move: Move.t(),
+          result: :continue | :victory | :draw,
+          error: atom
+        }
 
   @components [
     stage(:validate_move),
@@ -18,20 +27,21 @@ defmodule Tictactoe.Pipelines.GameMove do
         event
 
       {:error, error} ->
-        %{event | move: %{move | error: error}}
+        %{event | error: error}
     end
   end
 
-  def apply_move(%__MODULE__{move: %Move{error: nil}} = event, _opts) do
+  def apply_move(%__MODULE__{error: nil} = event, _opts) do
     game = Game.apply_move(event.game, event.move)
     %{event | game: game}
   end
 
-  def apply_move(%__MODULE__{move: %Move{error: _error}} = event, _opts), do: event
+  def apply_move(%__MODULE__{error: _error} = event, _opts), do: event
 
-  def check_game_status(%__MODULE__{move: %Move{error: nil} = move} = event, _opts) do
+  def check_game_status(%__MODULE__{error: nil, game: game} = event, _opts) do
     status = Game.check_game_status(event.game)
-    %{event | move: %{move | result: status}}
+
+    %{event | result: status, game: %{game | status: status}}
   end
 
   def check_game_status(%__MODULE__{} = event, _opts), do: event

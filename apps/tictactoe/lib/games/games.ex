@@ -20,6 +20,10 @@ defmodule Tictactoe.Games do
     |> Repo.insert()
   end
 
+  def insert(game) do
+    Repo.insert(game, on_conflict: :replace_all, conflict_target: [:uuid])
+  end
+
   def find_free_game() do
     Repo.one(from(g in Game, where: is_nil(g.user_o_uuid) and g.status == "pending"))
   end

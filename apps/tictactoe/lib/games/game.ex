@@ -7,7 +7,8 @@ defmodule Tictactoe.Game do
           field: list(integer()),
           user_x_uuid: String.t(),
           user_o_uuid: String.t(),
-          turn_uuid: String.t()
+          turn_uuid: String.t(),
+          status: String.t()
         }
 
   alias Tictactoe.{Game, Move}
@@ -55,7 +56,7 @@ defmodule Tictactoe.Game do
   def check_game_status(game) do
     with :nope <- check_victory(game),
          :nope <- check_draw(game) do
-      :continue
+      "continue"
     end
   end
 
@@ -108,13 +109,13 @@ defmodule Tictactoe.Game do
       ]
       |> Enum.any?(&(Enum.uniq(&1) in [[0], [1]]))
 
-    if any_row? or any_column? or any_diagonal?, do: :victory, else: :nope
+    if any_row? or any_column? or any_diagonal?, do: "victory", else: :nope
   end
 
   defp check_draw(%Game{field: field}) do
     flattened = List.flatten(field)
     any_nil? = nil in Enum.uniq(flattened)
-    if any_nil?, do: :nope, else: :draw
+    if any_nil?, do: :nope, else: "draw"
   end
 
   defp transpose([[] | _]), do: []
