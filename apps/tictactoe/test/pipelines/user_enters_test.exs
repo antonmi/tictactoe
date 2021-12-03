@@ -43,7 +43,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     test "it creates a new user and a game", %{event: event} do
       result = process_event(event)
 
-      assert result.error == :invalid_user_data
+      assert result.error == :invalid_input
     end
   end
 

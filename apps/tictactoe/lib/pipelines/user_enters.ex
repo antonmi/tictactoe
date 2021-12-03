@@ -11,7 +11,18 @@ defmodule Tictactoe.Pipelines.UserEnters do
             game_data: %{},
             error: nil
 
+  @type t :: %__MODULE__{
+               username: String.t,
+               token: String.t,
+               users_with_the_name: list(User.t),
+               user: User.t,
+               game: Game.t,
+               game_data: map,
+               error: nil | :invalid_input | :no_such_user | :invalid_user_data
+             }
+
   @components [
+    stage(:validate_input),
     switch(
       :token_present?,
       branches: %{
@@ -39,6 +50,14 @@ defmodule Tictactoe.Pipelines.UserEnters do
     goto_point(:prepare_game_data_point),
     stage(:prepare_game_data)
   ]
+
+  def validate_input(%__MODULE__{username: username, token: token} = event, _) do
+    if String.length("#{username}") == 0 and is_nil(token) do
+      done!(%{event | error: :invalid_input})
+    else
+      event
+    end
+  end
 
   def token_present?(%__MODULE__{token: nil}, _opts), do: :no
   def token_present?(%__MODULE__{token: _token}, _opts), do: :yes
