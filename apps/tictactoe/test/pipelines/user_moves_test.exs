@@ -44,8 +44,6 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
                turn_uuid: ^user_o_uuid
              } = game_data[:game]
 
-      assert event.game.status == "active"
-
       user_x = Users.find(user_x.uuid)
       assert user_x.scores == 0
     end
@@ -74,8 +72,6 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
         status: "victory",
         turn_uuid: ^user_x_uuid
       } = game_data[:game]
-
-      assert event.game.status == "victory"
 
       user_x = Users.find(user_x.uuid)
       assert user_x.scores == 3
@@ -106,10 +102,48 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
                turn_uuid: ^user_x_uuid
              } = game_data[:game]
 
-      assert event.game.status == "draw"
-
       user_x = Users.find(user_x.uuid)
       assert user_x.scores == 1
+    end
+  end
+
+  describe "error case when game is not active" do
+    setup %{user_x: user_x, game: game} do
+      {:ok, game} =
+        game
+        |> Game.changeset(%{status: Enum.random(["pending", "victory", "draw"])})
+        |> Repo.update()
+
+      event = %UserMoves{token: user_x.uuid, game_uuid: game.uuid, move: 8}
+
+      %{event: event, game: game}
+    end
+
+
+    test "error", %{event: event} do
+      event = process_event(event)
+
+      assert event.error == :game_is_not_active
+    end
+  end
+
+  describe "error case when game is cancelled" do
+    setup %{user_x: user_x, game: game} do
+      {:ok, game} =
+        game
+        |> Game.changeset(%{status: "cancelled"})
+        |> Repo.update()
+
+      event = %UserMoves{token: user_x.uuid, game_uuid: game.uuid, move: 8}
+
+      %{event: event, game: game}
+    end
+
+
+    test "error", %{event: event} do
+      event = process_event(event)
+
+      assert event.error == :game_is_cancelled
     end
   end
 end

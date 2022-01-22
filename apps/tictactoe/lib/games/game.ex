@@ -6,7 +6,7 @@ defmodule Tictactoe.Game do
 
   alias Tictactoe.{Game, Move}
 
-  @statuses ["pending", "active", "victory", "draw"]
+  @statuses ["pending", "active", "victory", "draw", "cancelled"]
 
   @primary_key {:uuid, :binary_id, autogenerate: true}
   schema "games" do

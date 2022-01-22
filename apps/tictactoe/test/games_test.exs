@@ -94,4 +94,12 @@ defmodule Tictactoe.GamesTest do
       assert ^game = Games.pending_game_for_user(user_x.uuid)
     end
   end
+
+  describe "cancel_game/1" do
+    test "cancelled status", %{user_x: user_x} do
+      {:ok, game} = Games.create(user_x.uuid, nil)
+      {:ok, game} = Games.cancel_game(game)
+      assert game.status == "cancelled"
+    end
+  end
 end

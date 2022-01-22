@@ -68,6 +68,8 @@ defmodule Tictactoe.Pipelines.UserMoves do
     case game.status do
       "active" ->
         event
+      "cancelled" ->
+        done!(%{event | error: :game_is_cancelled})
 
       _other ->
         done!(%{event | error: :game_is_not_active})

@@ -64,4 +64,10 @@ defmodule Tictactoe.Games do
       user_x: Map.take(user_x, [:uuid, :name])
     }
   end
+
+  def cancel_game(game) do
+    game
+    |> Game.changeset(%{status: "cancelled"})
+    |> Repo.update()
+  end
 end
