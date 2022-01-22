@@ -135,7 +135,7 @@ defmodule Tictactoe.Pipelines.UserEnters do
     %{event | game: game}
   end
 
-  def prepare_game_data(%__MODULE__{game: game, user: user} = event, _opts) do
+  def prepare_game_data(%__MODULE__{game: game} = event, _opts) do
     game_data = Games.game_data(game)
     %{event | game_data: game_data}
   end

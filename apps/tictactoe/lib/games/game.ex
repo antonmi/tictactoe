@@ -15,6 +15,8 @@ defmodule Tictactoe.Game do
     field(:user_o_uuid, :binary_id)
     field(:turn_uuid, :binary_id)
     field(:status, :string, default: "pending")
+
+    timestamps()
   end
 
   def changeset(game, attrs \\ %{}) do

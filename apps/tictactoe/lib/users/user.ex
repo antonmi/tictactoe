@@ -8,6 +8,8 @@ defmodule Tictactoe.User do
   schema "users" do
     field :name, :string
     field :scores, :integer, default: 0
+
+    timestamps()
   end
 
   def changeset(user, attrs \\ %{}) do
