@@ -34,4 +34,8 @@ defmodule Tictactoe.Users do
   def users_for_uuids(uuids) do
     Repo.all(from u in User, where: u.uuid in ^uuids)
   end
+
+  def top_users() do
+    Repo.all(from u in User, limit: 10, order_by: [desc: :scores])
+  end
 end
