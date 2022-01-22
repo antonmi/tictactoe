@@ -2,6 +2,8 @@ defmodule Tictactoe.User do
   use Ecto.Schema
   alias Ecto.Changeset
 
+  @type t :: %__MODULE__{}
+
   @primary_key {:uuid, :binary_id, autogenerate: true}
   schema "users" do
     field(:name, :string)

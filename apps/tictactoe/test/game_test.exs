@@ -47,9 +47,21 @@ defmodule Tictactoe.GameTest do
       %{game: game, move: move}
     end
 
-    test "game field and turn", %{game: game, move: move} do
+    test "game field", %{game: game, move: move} do
       new_game = Game.apply_move(game, move)
       assert new_game.field == [1, 0, nil, nil, 1, nil, nil, nil, nil]
+    end
+  end
+
+  describe "toggle_turn/2" do
+    setup do
+      game = build_game([1, 0, nil, nil, nil, nil, nil, nil, nil])
+      move = %Move{user_uuid: "user_x", position: 4}
+      %{game: game, move: move}
+    end
+
+    test "game turn", %{game: game} do
+      new_game = Game.toggle_turn(game)
       assert new_game.turn_uuid == "user_o"
     end
   end

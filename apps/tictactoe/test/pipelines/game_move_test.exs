@@ -53,7 +53,23 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
       assert result == "victory"
 
       assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, 1]
-      assert game.turn_uuid == "user_o"
+      assert game.turn_uuid == "user_x"
+    end
+
+    test "draw case" do
+      game = build_game([0, 1, 1, 1, 1, 0, 0, 0, nil])
+      move = %Move{user_uuid: "user_x", position: 8}
+
+      [%GameMove{game: game, error: error, result: result}] =
+        [%GameMove{game: game, move: move}]
+        |> Manager.stream_to(GameMove)
+        |> Enum.to_list()
+
+      assert is_nil(error)
+      assert result == "draw"
+
+      assert game.field == [0, 1, 1, 1, 1, 0, 0, 0, 1]
+      assert game.turn_uuid == "user_x"
     end
   end
 

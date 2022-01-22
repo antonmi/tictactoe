@@ -11,14 +11,15 @@ defmodule Tictactoe.Pipelines.GameMove do
   @type t :: %__MODULE__{
           game: Game.t(),
           move: Move.t(),
-          result: :continue | :victory | :draw,
+          result: String.t(), # "continue" | "victory" | "draw",
           error: atom
         }
 
   @components [
     stage(:validate_move),
     stage(:apply_move),
-    stage(:check_game_status)
+    stage(:check_game_status),
+    stage(:toggle_turn)
   ]
 
   def validate_move(%__MODULE__{game: game, move: move} = event, _opts) do
@@ -27,7 +28,7 @@ defmodule Tictactoe.Pipelines.GameMove do
         event
 
       {:error, error} ->
-        %{event | error: error}
+        done!(%{event | error: error})
     end
   end
 
@@ -36,13 +37,19 @@ defmodule Tictactoe.Pipelines.GameMove do
     %{event | game: game}
   end
 
-  def apply_move(%__MODULE__{error: _error} = event, _opts), do: event
-
   def check_game_status(%__MODULE__{error: nil, game: game} = event, _opts) do
     status = Game.check_game_status(event.game)
 
     %{event | result: status, game: %{game | status: status}}
   end
 
-  def check_game_status(%__MODULE__{} = event, _opts), do: event
+  def toggle_turn(%__MODULE__{error: nil, game: game, result: status} = event, _opts) do
+    game = if status == "continue" do
+     Game.toggle_turn(game)
+    else
+      game
+    end
+
+    %{event | game: game}
+  end
 end

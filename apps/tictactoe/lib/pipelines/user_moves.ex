@@ -11,7 +11,6 @@ defmodule Tictactoe.Pipelines.UserMoves do
             game: nil,
             move_result: nil,
             game_data: %{},
-            # :invalid_input, :no_such_user
             error: nil
 
   @type t :: %__MODULE__{
@@ -35,9 +34,9 @@ defmodule Tictactoe.Pipelines.UserMoves do
     stage(:update_game_record),
     switch(:on_move_result,
       branches: %{
-        continue: [stage(:do_nothing)],
-        victory: [],
-        draw: []
+        continue: [tbd()],
+        victory: [tbd()],
+        draw: [tbd()]
       }
     ),
     stage(:prepare_game_data)

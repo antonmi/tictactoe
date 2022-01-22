@@ -2,14 +2,7 @@ defmodule Tictactoe.Game do
   alias Ecto.Changeset
   use Ecto.Schema
 
-  @type t :: %__MODULE__{
-          uuid: String.t(),
-          field: list(integer()),
-          user_x_uuid: String.t(),
-          user_o_uuid: String.t(),
-          turn_uuid: String.t(),
-          status: String.t()
-        }
+  @type t :: %__MODULE__{}
 
   alias Tictactoe.{Game, Move}
 
@@ -49,7 +42,7 @@ defmodule Tictactoe.Game do
     number = number_to_put_on_the_field(game)
     new_field = List.update_at(game.field, move.position, fn nil -> number end)
 
-    %{toggle_turn(game) | field: new_field}
+    %{game | field: new_field}
   end
 
   @spec check_game_status(Game.t()) :: :continue | :victory | :draw
@@ -65,7 +58,7 @@ defmodule Tictactoe.Game do
   end
 
   defp validate_position(%Move{position: position}) do
-    if position in 0..9, do: :ok, else: {:error, :position_outside_range}
+    if position in 0..8, do: :ok, else: {:error, :position_outside_range}
   end
 
   defp validate_square(%Game{field: field}, %Move{position: position}) do
@@ -73,6 +66,19 @@ defmodule Tictactoe.Game do
 
     if is_nil(in_position), do: :ok, else: {:error, :square_is_taken}
   end
+
+  def toggle_turn(
+         %Game{turn_uuid: turn_uuid, user_x_uuid: user_x_uuid, user_o_uuid: user_o_uuid} = game
+       ) do
+    case turn_uuid do
+      ^user_x_uuid ->
+        %{game | turn_uuid: user_o_uuid}
+
+      ^user_o_uuid ->
+        %{game | turn_uuid: user_x_uuid}
+    end
+  end
+
 
   defp number_to_put_on_the_field(%Game{
          turn_uuid: turn_uuid,
@@ -82,18 +88,6 @@ defmodule Tictactoe.Game do
     case turn_uuid do
       ^user_x_uuid -> 1
       ^user_o_uuid -> 0
-    end
-  end
-
-  defp toggle_turn(
-         %Game{turn_uuid: turn_uuid, user_x_uuid: user_x_uuid, user_o_uuid: user_o_uuid} = game
-       ) do
-    case turn_uuid do
-      ^user_x_uuid ->
-        %{game | turn_uuid: user_o_uuid}
-
-      ^user_o_uuid ->
-        %{game | turn_uuid: user_x_uuid}
     end
   end
 
