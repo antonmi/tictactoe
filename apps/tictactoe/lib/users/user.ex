@@ -6,12 +6,13 @@ defmodule Tictactoe.User do
 
   @primary_key {:uuid, :binary_id, autogenerate: true}
   schema "users" do
-    field(:name, :string)
+    field :name, :string
+    field :scores, :integer, default: 0
   end
 
   def changeset(user, attrs \\ %{}) do
     user
-    |> Changeset.cast(attrs, [:name])
+    |> Changeset.cast(attrs, [:name, :scores])
     |> Changeset.validate_required([:name])
   end
 end

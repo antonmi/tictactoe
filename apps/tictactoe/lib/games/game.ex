@@ -49,7 +49,7 @@ defmodule Tictactoe.Game do
   def check_game_status(game) do
     with :nope <- check_victory(game),
          :nope <- check_draw(game) do
-      "continue"
+      "active"
     end
   end
 

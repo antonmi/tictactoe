@@ -32,13 +32,7 @@ defmodule Tictactoe.Pipelines.UserMoves do
     plug_with(GameMoveAdapter, do: stages_from(GameMove)),
     stage(:check_error_after_move),
     stage(:update_game_record),
-    switch(:on_move_result,
-      branches: %{
-        continue: [tbd()],
-        victory: [tbd()],
-        draw: [tbd()]
-      }
-    ),
+    stage(:update_user_scores_if_game_finished),
     stage(:prepare_game_data)
   ]
 
@@ -96,15 +90,18 @@ defmodule Tictactoe.Pipelines.UserMoves do
     end
   end
 
-  def on_move_result(%__MODULE__{move_result: move_result}, _) do
-    case move_result do
-      "continue" -> :continue
-      "victory" -> :victory
-      "draw" -> :draw
-    end
+  def update_user_scores_if_game_finished(%__MODULE__{game: game, user: user} = event, _opts) do
+    {:ok, user} =
+      case game.status do
+        "victory" ->
+          Users.increase_scores(user, 3)
+        "draw" ->
+          Users.increase_scores(user, 1)
+        "active" ->
+          {:ok, user}
+      end
+    %{event | user: user}
   end
-
-  def do_nothing(event, _), do: event
 
   def prepare_game_data(%__MODULE__{game: game} = event, _opts) do
     game_data = Games.game_data(game)

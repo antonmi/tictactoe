@@ -34,7 +34,7 @@ defmodule Tictactoe.Pipelines.GameMoveTest do
         |> Enum.to_list()
 
       assert is_nil(error)
-      assert result == "continue"
+      assert result == "active"
 
       assert game.field == [1, nil, nil, nil, 1, nil, nil, nil, nil]
       assert game.turn_uuid == "user_o"

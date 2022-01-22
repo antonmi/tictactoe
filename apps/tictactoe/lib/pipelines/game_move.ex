@@ -11,7 +11,7 @@ defmodule Tictactoe.Pipelines.GameMove do
   @type t :: %__MODULE__{
           game: Game.t(),
           move: Move.t(),
-          result: String.t(), # "continue" | "victory" | "draw",
+          result: String.t(), # "active" | "victory" | "draw",
           error: atom
         }
 
@@ -44,7 +44,7 @@ defmodule Tictactoe.Pipelines.GameMove do
   end
 
   def toggle_turn(%__MODULE__{error: nil, game: game, result: status} = event, _opts) do
-    game = if status == "continue" do
+    game = if status == "active" do
      Game.toggle_turn(game)
     else
       game

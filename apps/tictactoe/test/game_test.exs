@@ -67,9 +67,9 @@ defmodule Tictactoe.GameTest do
   end
 
   describe "check_game_status/1" do
-    test "continue" do
+    test "active" do
       game = %Game{field: [1, 0, nil, nil, 1, nil, nil, nil, nil]}
-      assert "continue" = Game.check_game_status(game)
+      assert "active" = Game.check_game_status(game)
     end
 
     test "victory cases" do

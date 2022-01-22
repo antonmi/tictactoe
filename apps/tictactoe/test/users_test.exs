@@ -32,4 +32,16 @@ defmodule Tictactoe.UsersTest do
       assert Enum.count(users) == 3
     end
   end
+
+  describe "increase_scores/2" do
+    setup do
+      {:ok, user} = Users.create("john")
+      %{user: user}
+    end
+
+    test "new value", %{user: user} do
+      {:ok, user} = Users.increase_scores(user, 3)
+      assert user.scores == 3
+    end
+  end
 end

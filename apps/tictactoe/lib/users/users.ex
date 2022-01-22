@@ -24,4 +24,10 @@ defmodule Tictactoe.Users do
 
     Repo.all(from(u in User, where: ilike(u.name, ^like)))
   end
+
+  def increase_scores(user, value) do
+    user
+    |> User.changeset(%{scores: user.scores + value})
+    |> Repo.update
+  end
 end

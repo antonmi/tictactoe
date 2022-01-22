@@ -10,12 +10,12 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
   end
 
   def process_event(event) do
-    [result] =
+    [event] =
       [event]
       |> Manager.stream_to(UserMoves)
       |> Enum.to_list()
 
-    result
+    event
   end
 
   setup do
@@ -32,17 +32,22 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
       %{event: event}
     end
 
-    test "it sets 1 and return continue status", %{event: event, user_o: user_o} do
-      result = process_event(event)
+    test "it sets 1 and return continue status", %{event: event, user_x: user_x, user_o: user_o} do
+      event = process_event(event)
 
-      game_data = result.game_data
+      game_data = event.game_data
       user_o_uuid = user_o.uuid
 
       assert %{
                field: [nil, nil, nil, nil, 1, nil, nil, nil, nil],
-               status: "continue",
+               status: "active",
                turn_uuid: ^user_o_uuid
              } = game_data[:game]
+
+      assert event.game.status == "active"
+
+      user_x = Users.find(user_x.uuid)
+      assert user_x.scores == 0
     end
   end
 
@@ -59,9 +64,9 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
     end
 
     test "status victory", %{event: event, user_x: user_x} do
-      result = process_event(event)
+      event = process_event(event)
 
-      game_data = result.game_data
+      game_data = event.game_data
       user_x_uuid = user_x.uuid
 
       assert %{
@@ -69,6 +74,11 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
         status: "victory",
         turn_uuid: ^user_x_uuid
       } = game_data[:game]
+
+      assert event.game.status == "victory"
+
+      user_x = Users.find(user_x.uuid)
+      assert user_x.scores == 3
     end
   end
 
@@ -85,9 +95,9 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
     end
 
     test "status victory", %{event: event, user_x: user_x} do
-      result = process_event(event)
+      event = process_event(event)
 
-      game_data = result.game_data
+      game_data = event.game_data
       user_x_uuid = user_x.uuid
 
       assert %{
@@ -95,6 +105,11 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
                status: "draw",
                turn_uuid: ^user_x_uuid
              } = game_data[:game]
+
+      assert event.game.status == "draw"
+
+      user_x = Users.find(user_x.uuid)
+      assert user_x.scores == 1
     end
   end
 end
