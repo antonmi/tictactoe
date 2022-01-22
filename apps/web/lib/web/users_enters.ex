@@ -1,5 +1,3 @@
-#TODO this should be
-
 defmodule Web.UserEnters do
   alias Tictactoe.Interfaces.UserEnters
 

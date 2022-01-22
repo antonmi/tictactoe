@@ -10,12 +10,12 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
   end
 
   def process_event(event) do
-    [result] =
+    [event] =
       [event]
       |> Manager.stream_to(UserEnters)
       |> Enum.to_list()
 
-    result
+    event
   end
 
   describe "new user without token/uuid" do
@@ -24,11 +24,11 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user and a game", %{event: event} do
-      result = process_event(event)
+      event = process_event(event)
 
-      assert result.user.name == "john"
-      assert result.game
-      game_data = result.game_data
+      assert event.user.name == "john"
+      assert event.game
+      game_data = event.game_data
       assert game_data[:game]
       assert game_data[:user_x]
       assert game_data[:user_o] == %{}
@@ -41,9 +41,9 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user and a game", %{event: event} do
-      result = process_event(event)
+      event = process_event(event)
 
-      assert result.error == :invalid_input
+      assert event.error == :invalid_input
     end
   end
 
@@ -53,12 +53,12 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
       %{event: %UserEnters{username: "john"}}
     end
 
-    test "it creates a new user with postix", %{event: event} do
-      result = process_event(event)
+    test "it creates a new user with postfix", %{event: event} do
+      event = process_event(event)
 
-      assert result.user.name == "john_1"
-      assert result.game
-      game_data = result.game_data
+      assert event.user.name == "john_1"
+      assert event.game
+      game_data = event.game_data
       assert game_data[:game]
       assert game_data[:user_x]
       assert game_data[:user_o] == %{}
@@ -73,12 +73,12 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it creates a new user find existing game for him", %{event: event, game: game} do
-      result = process_event(event)
+      event = process_event(event)
 
-      assert result.user.name == "john"
-      assert result.game.uuid == game.uuid
-      game_data = result.game_data
-      assert game_data[:game]
+      assert event.user.name == "john"
+      assert event.game.uuid == game.uuid
+      game_data = event.game_data
+      assert game_data[:game][:status] == "active"
       assert game_data[:user_x][:name] == "jack"
       assert game_data[:user_o][:name] == "john"
     end
@@ -91,11 +91,11 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
     end
 
     test "it finds the user and creates a new game", %{event: event} do
-      result = process_event(event)
+      event = process_event(event)
 
-      assert result.user.name == "john"
-      assert result.game
-      game_data = result.game_data
+      assert event.user.name == "john"
+      assert event.game
+      game_data = event.game_data
       assert game_data[:game][:status] == "pending"
       assert game_data[:user_x]
       assert game_data[:user_o] == %{}

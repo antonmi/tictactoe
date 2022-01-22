@@ -43,7 +43,10 @@ defmodule Tictactoe.Pipelines.UserEnters do
     switch(
       :is_there_free_game?,
       branches: %{
-        yes: [stage(:assign_user_to_the_game)],
+        yes: [
+          stage(:assign_user_to_the_game),
+          stage(:activate_game)
+        ],
         no: [stage(:create_new_game)]
       }
     ),
@@ -132,6 +135,11 @@ defmodule Tictactoe.Pipelines.UserEnters do
 
   def create_new_game(%__MODULE__{game: nil, user: user} = event, _opts) do
     {:ok, %Game{} = game} = Games.create(user.uuid, nil)
+    %{event | game: game}
+  end
+
+  def activate_game(%__MODULE__{game: game} = event, _opts) do
+    {:ok, %Game{} = game} = Games.activate(game)
     %{event | game: game}
   end
 

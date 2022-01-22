@@ -3,10 +3,7 @@ defmodule Tictactoe.Interfaces.UserEnters do
   alias Tictactoe.Pipelines.UserEnters
 
   def call(username, token) do
-
-    case %UserEnters{username: username, token: token}
-         |> Tictactoe.EventPool.process_event()
-      do
+    case EventPool.process_event(%UserEnters{username: username, token: token}) do
       {:ok, event} ->
         {:ok, event.game_data}
       {:error, :error} ->
