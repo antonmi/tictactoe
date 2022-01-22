@@ -1,15 +1,15 @@
-defmodule Main.MixProject do
+defmodule Web.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :tictactoe,
+      app: :web,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.10",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -18,18 +18,18 @@ defmodule Main.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {Tictactoe.Application, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Web.Application, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:alf, git: "https://github.com/antonmi/alf.git", branch: "main"},
-      {:ecto_sql, "~> 3.7"},
-      {:postgrex, "~> 0.15"},
-      {:poolboy, "~> 1.5"}
+      {:tictactoe, in_umbrella: true},
+      {:plug_cowboy, "~> 2.0"},
+      {:joken, "~> 2.4"},
+      {:jason, "~> 1.3"}
     ]
   end
 end
