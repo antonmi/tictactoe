@@ -30,4 +30,8 @@ defmodule Tictactoe.Users do
     |> User.changeset(%{scores: user.scores + value})
     |> Repo.update
   end
+
+  def users_for_uuids(uuids) do
+    Repo.all(from u in User, where: u.uuid in ^uuids)
+  end
 end

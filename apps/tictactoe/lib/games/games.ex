@@ -34,13 +34,28 @@ defmodule Tictactoe.Games do
     |> Repo.update()
   end
 
+  def games_for_user(user_uuid) do
+    Repo.all(
+      from(
+        g in base_query_for_user_game(user_uuid),
+        order_by: [desc: :inserted_at]
+      )
+    )
+  end
+
   def active_game_for_user(user_uuid) do
     Repo.one(
       from(
-        g in Game,
-        where: g.status == "active",
-        where: g.user_x_uuid == ^user_uuid or g.user_o_uuid == ^user_uuid
+        g in base_query_for_user_game(user_uuid),
+        where: g.status == "active"
       )
+    )
+  end
+
+  defp base_query_for_user_game(user_uuid) do
+    from(
+      g in Game,
+      where: g.user_x_uuid == ^user_uuid or g.user_o_uuid == ^user_uuid
     )
   end
 

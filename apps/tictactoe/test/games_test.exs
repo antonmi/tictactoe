@@ -75,6 +75,15 @@ defmodule Tictactoe.GamesTest do
     end
   end
 
+  describe "games_for_user/1" do
+    test "when there is a game", %{user_x: user_x, user_o: user_o} do
+      {:ok, game1} = Games.create(user_x.uuid, user_o.uuid)
+      {:ok, game2} = Games.create(user_o.uuid, user_x.uuid)
+      games = Games.games_for_user(user_x.uuid)
+      assert games == [game1, game2]
+    end
+  end
+
   describe "active_game_for_user/1" do
     test "when there is a game", %{user_x: user_x, user_o: user_o} do
       {:ok, game} = Games.create(user_x.uuid, user_o.uuid)
