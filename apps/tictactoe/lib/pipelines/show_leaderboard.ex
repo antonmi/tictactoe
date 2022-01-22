@@ -7,9 +7,9 @@ defmodule Tictactoe.Pipelines.ShowLeaderBoard do
             users_list: []
 
   @type t :: %__MODULE__{
-               users: list(User.t),
-               users_list: list(map())
-             }
+          users: list(User.t()),
+          users_list: list(map())
+        }
 
   @components [
     stage(:find_users),
@@ -24,10 +24,13 @@ defmodule Tictactoe.Pipelines.ShowLeaderBoard do
   def format_users_list(%__MODULE__{users: users} = event, _) do
     users_list =
       users
-      |> Enum.map(&(%{
-        name: &1.name,
-        scores: &1.scores,
-      }))
+      |> Enum.map(
+        &%{
+          name: &1.name,
+          scores: &1.scores
+        }
+      )
+
     %{event | users_list: users_list}
   end
 end

@@ -70,8 +70,8 @@ defmodule Tictactoe.Game do
   end
 
   def toggle_turn(
-         %Game{turn_uuid: turn_uuid, user_x_uuid: user_x_uuid, user_o_uuid: user_o_uuid} = game
-       ) do
+        %Game{turn_uuid: turn_uuid, user_x_uuid: user_x_uuid, user_o_uuid: user_o_uuid} = game
+      ) do
     case turn_uuid do
       ^user_x_uuid ->
         %{game | turn_uuid: user_o_uuid}
@@ -80,7 +80,6 @@ defmodule Tictactoe.Game do
         %{game | turn_uuid: user_x_uuid}
     end
   end
-
 
   defp number_to_put_on_the_field(%Game{
          turn_uuid: turn_uuid,

@@ -60,10 +60,10 @@ defmodule Tictactoe.Pipelines.UserCancelsGame do
       "active" ->
         {:ok, game} = Games.cancel_game(game)
         %{event | game: game}
+
       _other ->
         %{event | error: :game_is_not_active}
     end
-
   end
 
   def prepare_game_data(%__MODULE__{game: game} = event, _opts) do

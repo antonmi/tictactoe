@@ -68,10 +68,10 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
       user_x_uuid = user_x.uuid
 
       assert %{
-        field: [1, 0, nil, nil, 1, 0, nil, nil, 1],
-        status: "victory",
-        turn_uuid: ^user_x_uuid
-      } = game_data[:game]
+               field: [1, 0, nil, nil, 1, 0, nil, nil, 1],
+               status: "victory",
+               turn_uuid: ^user_x_uuid
+             } = game_data[:game]
 
       user_x = Users.find(user_x.uuid)
       assert user_x.scores == 3
@@ -119,7 +119,6 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
       %{event: event, game: game}
     end
 
-
     test "error", %{event: event} do
       event = process_event(event)
 
@@ -138,7 +137,6 @@ defmodule Tictactoe.Pipelines.UserMovesTest do
 
       %{event: event, game: game}
     end
-
 
     test "error", %{event: event} do
       event = process_event(event)

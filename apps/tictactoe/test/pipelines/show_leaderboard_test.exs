@@ -1,7 +1,7 @@
 defmodule Tictactoe.Pipelines.ShowLeaderBoardTest do
   use Tictactoe.DataCase
 
-  alias Tictactoe.{Repo, User,  Users}
+  alias Tictactoe.{Repo, User, Users}
   alias Tictactoe.Pipelines.ShowLeaderBoard
   alias ALF.Manager
 
@@ -20,11 +20,13 @@ defmodule Tictactoe.Pipelines.ShowLeaderBoardTest do
 
   def create_user(name, scores) do
     {:ok, user} = Users.create(name)
+
     {:ok, user} =
       user
       |> User.changeset(%{scores: scores})
       |> Repo.update()
-   user
+
+    user
   end
 
   setup do
@@ -41,5 +43,4 @@ defmodule Tictactoe.Pipelines.ShowLeaderBoardTest do
              %{name: "john", scores: 5}
            ] = event.users_list
   end
-
 end

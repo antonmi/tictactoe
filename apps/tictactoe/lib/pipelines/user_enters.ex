@@ -12,14 +12,14 @@ defmodule Tictactoe.Pipelines.UserEnters do
             error: nil
 
   @type t :: %__MODULE__{
-               username: String.t,
-               token: String.t,
-               users_with_the_name: list(User.t),
-               user: User.t,
-               game: Game.t,
-               game_data: map,
-               error: nil | :invalid_input | :no_such_user | :invalid_user_data
-             }
+          username: String.t(),
+          token: String.t(),
+          users_with_the_name: list(User.t()),
+          user: User.t(),
+          game: Game.t(),
+          game_data: map,
+          error: nil | :invalid_input | :no_such_user | :invalid_user_data
+        }
 
   @components [
     stage(:validate_input),

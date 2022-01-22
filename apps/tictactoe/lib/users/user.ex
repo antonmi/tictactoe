@@ -6,8 +6,8 @@ defmodule Tictactoe.User do
 
   @primary_key {:uuid, :binary_id, autogenerate: true}
   schema "users" do
-    field :name, :string
-    field :scores, :integer, default: 0
+    field(:name, :string)
+    field(:scores, :integer, default: 0)
 
     timestamps()
   end

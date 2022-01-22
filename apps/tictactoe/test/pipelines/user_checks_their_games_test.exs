@@ -40,15 +40,14 @@ defmodule Tictactoe.Pipelines.UserChecksTheirGamesTest do
       [game3, game2, game1] = event.games_list
 
       assert %{
-        field: [nil, nil, nil, nil, nil, nil, nil, nil, nil],
-        opponent_name: nil,
-        status: "pending",
-        uuid: _uuid
-      } = game1
+               field: [nil, nil, nil, nil, nil, nil, nil, nil, nil],
+               opponent_name: nil,
+               status: "pending",
+               uuid: _uuid
+             } = game1
 
       assert game2.opponent_name == "jack"
       assert game3.opponent_name == "jimmy"
     end
   end
-  
 end

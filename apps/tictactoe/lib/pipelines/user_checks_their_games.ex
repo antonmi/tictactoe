@@ -53,12 +53,11 @@ defmodule Tictactoe.Pipelines.UserChecksTheirGames do
   def preload_opponents(%__MODULE__{games: games} = event, _) do
     opponents =
       games
-      |> Enum.map(&([&1.user_x_uuid, &1.user_o_uuid]))
+      |> Enum.map(&[&1.user_x_uuid, &1.user_o_uuid])
       |> List.flatten()
       |> Users.users_for_uuids()
-      |> Enum.map(&({&1.uuid, &1}))
+      |> Enum.map(&{&1.uuid, &1})
       |> Enum.into(%{})
-
 
     %{event | opponents: opponents}
   end
@@ -74,6 +73,7 @@ defmodule Tictactoe.Pipelines.UserChecksTheirGames do
           opponent_name: opponent_for_user(game, user, opponents)
         }
       end)
+
     %{event | games_list: games_list}
   end
 

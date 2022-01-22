@@ -39,7 +39,7 @@ defmodule Tictactoe.Pipelines.UserCancelsGameTest do
 
       assert %{
                field: [nil, nil, nil, nil, nil, nil, nil, nil, nil],
-               status: "cancelled",
+               status: "cancelled"
              } = game_data[:game]
     end
   end
@@ -62,5 +62,4 @@ defmodule Tictactoe.Pipelines.UserCancelsGameTest do
       assert event.error == :game_is_not_active
     end
   end
-  
 end

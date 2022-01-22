@@ -68,6 +68,7 @@ defmodule Tictactoe.Pipelines.UserMoves do
     case game.status do
       "active" ->
         event
+
       "cancelled" ->
         done!(%{event | error: :game_is_cancelled})
 
@@ -97,11 +98,14 @@ defmodule Tictactoe.Pipelines.UserMoves do
       case game.status do
         "victory" ->
           Users.increase_scores(user, 3)
+
         "draw" ->
           Users.increase_scores(user, 1)
+
         "active" ->
           {:ok, user}
       end
+
     %{event | user: user}
   end
 
