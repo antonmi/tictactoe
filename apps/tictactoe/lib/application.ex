@@ -1,7 +1,7 @@
 defmodule Tictactoe.Application do
   use Application
 
-  alias Tictactoe.{EventPool, Repo}
+  alias Tictactoe.Repo
 
   alias Tictactoe.Pipelines.{
     UserEnters,
@@ -14,10 +14,7 @@ defmodule Tictactoe.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
-      :poolboy.child_spec(:event_sink, poolboy_config()),
-      Repo
-    ]
+    children = [Repo]
 
     opts = [strategy: :one_for_one, name: Assistant.Supervisor]
     start_pipelines()
@@ -29,15 +26,6 @@ defmodule Tictactoe.Application do
     |> Enum.each(fn pipeline ->
       :ok = ALF.Manager.start(pipeline)
     end)
-  end
-
-  defp poolboy_config do
-    [
-      name: {:local, :event_sink},
-      worker_module: EventPool,
-      size: 5,
-      max_overflow: 2
-    ]
   end
 
   defp pipelines_to_start() do

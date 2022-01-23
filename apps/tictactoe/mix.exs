@@ -28,8 +28,7 @@ defmodule Main.MixProject do
     [
       {:alf, git: "https://github.com/antonmi/alf.git", branch: "main"},
       {:ecto_sql, "~> 3.7"},
-      {:postgrex, "~> 0.15"},
-      {:poolboy, "~> 1.5"}
+      {:postgrex, "~> 0.15"}
     ]
   end
 end
