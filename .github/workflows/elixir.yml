@@ -31,6 +31,10 @@ jobs:
         run: |
           apt-get update
           apt-get install --yes postgresql-client
+      - name: Query database
+        run: psql -h postgres -d tictactoe_test -U postgres -c 'SELECT 1;'
+        env:
+          PGPASSWORD: postgres
 
   build:
     name: Build and test
