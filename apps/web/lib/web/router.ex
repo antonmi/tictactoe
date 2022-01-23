@@ -1,7 +1,7 @@
 defmodule Web.Router do
   use Plug.Router
 
-  alias Web.{UserEnters, GameInfo}
+  alias Web.{UserEnters, GameInfo, UserMoves}
 
   plug(Plug.Logger, log: :debug)
   plug(:match)
@@ -18,6 +18,11 @@ defmodule Web.Router do
 
   get "/game_info/:uuid" do
     result = GameInfo.call(conn.params["uuid"])
+    send_resp(conn, 200, Jason.encode!(result))
+  end
+
+  post "/user_moves/:game_uuid/:move" do
+    result = UserMoves.call(conn.params["game_uuid"], conn.params["move"], conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
 
