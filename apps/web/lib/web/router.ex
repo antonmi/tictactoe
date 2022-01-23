@@ -12,9 +12,14 @@ defmodule Web.Router do
   end
 
   post "/user_enters/:username" do
-    result = UserEnters.call(conn.params["username"], nil)
+    result = UserEnters.call(conn.params["username"], conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
+
+#  post "/user_enters/:username" do
+#    result = UserEnters.call(conn.params["username"], nil)
+#    send_resp(conn, 200, Jason.encode!(result))
+#  end
 
   match _ do
     send_resp(conn, 404, "oops")

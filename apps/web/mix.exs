@@ -28,7 +28,6 @@ defmodule Web.MixProject do
     [
       {:tictactoe, in_umbrella: true},
       {:plug_cowboy, "~> 2.0"},
-      {:joken, "~> 2.4"},
       {:jason, "~> 1.3"}
     ]
   end

@@ -59,6 +59,7 @@ defmodule Tictactoe.Pipelines.UserEntersTest do
       assert event.user.name == "john_1"
       assert event.game
       game_data = event.game_data
+      assert event.token
       assert game_data[:game]
       assert game_data[:user_x]
       assert game_data[:user_o] == %{}

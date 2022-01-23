@@ -35,7 +35,8 @@ defmodule Tictactoe.Pipelines.UserEnters do
         no: [
           stage(:find_users_with_the_name),
           stage(:add_postfix_if_needed),
-          stage(:create_user)
+          stage(:create_user),
+          stage(:set_token)
         ]
       }
     ),
@@ -116,6 +117,10 @@ defmodule Tictactoe.Pipelines.UserEnters do
       {:error, _any} ->
         done!(%{event | error: :invalid_user_data})
     end
+  end
+
+  def set_token(%__MODULE__{user: user} = event, _opts) do
+    %{event | token: user.uuid}
   end
 
   def find_free_game(%__MODULE__{game: nil} = event, _opts) do
