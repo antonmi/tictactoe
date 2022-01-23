@@ -5,6 +5,9 @@ defmodule Tictactoe.Games do
 
   def find(uuid) do
     Repo.get(Game, uuid)
+  rescue
+    Ecto.Query.CastError ->
+      nil
   end
 
   def create(user_x_uuid, user_o_uuid) do

@@ -5,6 +5,7 @@ defmodule Tictactoe.Application do
 
   alias Tictactoe.Pipelines.{
     UserEnters,
+    GameInfo,
     UserMoves,
     ShowLeaderBoard,
     UserCancelsGame,
@@ -42,6 +43,7 @@ defmodule Tictactoe.Application do
   defp pipelines_to_start() do
     [
       UserEnters,
+      GameInfo,
       UserMoves,
       ShowLeaderBoard,
       UserCancelsGame,

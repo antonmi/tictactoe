@@ -34,8 +34,8 @@ defmodule Tictactoe.EventPool do
   defp do_process_event(%{__struct__: pipeline} = event) do
     {:ok, pid} = Client.start(pipeline)
     case Client.call(pid, event) do
-      %ALF.ErrorIP{} = _error_event ->
-      IO.inspect(_error_event)
+      %ALF.ErrorIP{} = error_event ->
+        IO.inspect(error_event)
         Client.stop(pid)
         {:error, :error}
       event ->

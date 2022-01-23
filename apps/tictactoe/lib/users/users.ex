@@ -4,12 +4,10 @@ defmodule Tictactoe.Users do
   alias Tictactoe.{User, Repo}
 
   def find(uuid) do
-    try do
-      Repo.get(User, uuid)
-    rescue
-      Ecto.Query.CastError ->
-        nil
-    end
+    Repo.get(User, uuid)
+  rescue
+    Ecto.Query.CastError ->
+      nil
   end
 
   @spec create(String.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}

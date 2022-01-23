@@ -1,4 +1,4 @@
-defmodule Web.UserEntersTest do
+defmodule Web.Requests.UserEntersTest do
   use Tictactoe.DataCase
   use Plug.Test
 
