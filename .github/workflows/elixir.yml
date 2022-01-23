@@ -40,14 +40,14 @@ jobs:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
-    - name: Install PostgreSQL client
-      run: |
-        apt-get update
-        apt-get install --yes postgresql-client
-    - name: Query database
-      run: psql -h postgres -d tictactoe_test -U postgres -c 'SELECT 1;'
-      env:
-        PGPASSWORD: postgres
+#    - name: Install PostgreSQL client
+#      run: |
+#        apt-get update
+#        apt-get install --yes postgresql-client
+#    - name: Query database
+#      run: psql -h postgres -d tictactoe_test -U postgres -c 'SELECT 1;'
+#      env:
+#        PGPASSWORD: postgres
     - name: Install dependencies
       run: mix deps.get
     - name: Create DB
