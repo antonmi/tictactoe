@@ -5,6 +5,7 @@ defmodule Web.GameInfo do
     case GameInfo.call(uuid) do
       {:ok, result} ->
         result
+
       {:error, error} ->
         %{error: error}
     end

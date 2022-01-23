@@ -27,18 +27,18 @@ defmodule Web.Requests.GameInfoTest do
     data = Jason.decode!(conn.resp_body)
 
     assert %{
-      "game" => %{
-        "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
-        "status" => "pending",
-        "turn_uuid" => uuid,
-        "uuid" => _game_uuid,
-      },
-      "user_o" => %{},
-      "user_x" => %{
-        "name" => "anton",
-        "uuid" => uuid
-      }
-    } = data
+             "game" => %{
+               "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
+               "status" => "pending",
+               "turn_uuid" => uuid,
+               "uuid" => _game_uuid
+             },
+             "user_o" => %{},
+             "user_x" => %{
+               "name" => "anton",
+               "uuid" => uuid
+             }
+           } = data
   end
 
   test "not found" do
@@ -54,6 +54,4 @@ defmodule Web.Requests.GameInfoTest do
 
     assert %{"error" => "no_such_game"} = data
   end
-
-
 end

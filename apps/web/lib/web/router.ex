@@ -3,9 +3,9 @@ defmodule Web.Router do
 
   alias Web.{UserEnters, GameInfo}
 
-  plug Plug.Logger, log: :debug
-  plug :match
-  plug :dispatch
+  plug(Plug.Logger, log: :debug)
+  plug(:match)
+  plug(:dispatch)
 
   get "/" do
     send_resp(conn, 200, "world")
@@ -21,10 +21,10 @@ defmodule Web.Router do
     send_resp(conn, 200, Jason.encode!(result))
   end
 
-#  post "/user_enters/:username" do
-#    result = UserEnters.call(conn.params["username"], nil)
-#    send_resp(conn, 200, Jason.encode!(result))
-#  end
+  #  post "/user_enters/:username" do
+  #    result = UserEnters.call(conn.params["username"], nil)
+  #    send_resp(conn, 200, Jason.encode!(result))
+  #  end
 
   match _ do
     send_resp(conn, 404, "NOT FOUND")

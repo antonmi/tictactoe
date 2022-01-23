@@ -8,6 +8,7 @@ defmodule Tictactoe.Interfaces.GameInfo do
         case event.error do
           nil ->
             {:ok, event.game_data}
+
           error ->
             {:error, error}
         end

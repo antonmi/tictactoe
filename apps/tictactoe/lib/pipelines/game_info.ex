@@ -9,10 +9,10 @@ defmodule Tictactoe.Pipelines.GameInfo do
             error: nil
 
   @type t :: %__MODULE__{
-               uuid: String.t(),
-               game: Game.t(),
-               game_data: map(),
-               error: nil | :no_such_game | :invalid_input
+          uuid: String.t(),
+          game: Game.t(),
+          game_data: map(),
+          error: nil | :no_such_game | :invalid_input
         }
 
   @components [

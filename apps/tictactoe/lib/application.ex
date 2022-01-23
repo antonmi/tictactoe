@@ -10,7 +10,7 @@ defmodule Tictactoe.Application do
     ShowLeaderBoard,
     UserCancelsGame,
     UserChecksTheirGames
-    }
+  }
 
   @impl true
   def start(_type, _args) do

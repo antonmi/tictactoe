@@ -5,6 +5,7 @@ defmodule Web.UserEnters do
     case UserEnters.call(username, token) do
       {:ok, result} ->
         result
+
       {:error, error} ->
         %{error: error}
     end

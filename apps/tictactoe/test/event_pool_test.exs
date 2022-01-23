@@ -9,8 +9,7 @@ defmodule Tictactoe.EventPoolTest do
     ShowLeaderBoard,
     UserCancelsGame,
     UserChecksTheirGames
-    }
-
+  }
 
   test "if pipelines started" do
     [

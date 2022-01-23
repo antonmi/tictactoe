@@ -18,7 +18,6 @@ defmodule Tictactoe.Pipelines.GameInfoTest do
     event
   end
 
-
   setup do
     {:ok, user} = Users.create("anton")
     {:ok, game} = Games.create(user.uuid, nil)

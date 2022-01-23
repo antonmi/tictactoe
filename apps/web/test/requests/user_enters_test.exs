@@ -16,19 +16,19 @@ defmodule Web.Requests.UserEntersTest do
     data = Jason.decode!(conn.resp_body)
 
     assert %{
-      "token" => uuid,
-      "game" => %{
-        "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
-        "status" => "pending",
-        "turn_uuid" => uuid,
-        "uuid" => _
-      },
-      "user_o" => %{},
-      "user_x" => %{
-        "name" => "anton" <> _,
-        "uuid" => uuid
-      }
-    } = data
+             "token" => uuid,
+             "game" => %{
+               "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
+               "status" => "pending",
+               "turn_uuid" => uuid,
+               "uuid" => _
+             },
+             "user_o" => %{},
+             "user_x" => %{
+               "name" => "anton" <> _,
+               "uuid" => uuid
+             }
+           } = data
   end
 
   test "the same user enters twice" do
@@ -65,21 +65,21 @@ defmodule Web.Requests.UserEntersTest do
     data = Jason.decode!(conn.resp_body)
 
     assert %{
-      "game" => %{
-        "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
-        "status" => "active",
-        "turn_uuid" => anton_uuid,
-        "uuid" => _
-      },
-      "token" => uuid,
-      "user_o" => %{
-        "name" => "baton",
-        "uuid" => uuid
-      },
-      "user_x" => %{
-        "name" => "anton",
-        "uuid" => anton_uuid
-      }
-    } = data
+             "game" => %{
+               "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
+               "status" => "active",
+               "turn_uuid" => anton_uuid,
+               "uuid" => _
+             },
+             "token" => uuid,
+             "user_o" => %{
+               "name" => "baton",
+               "uuid" => uuid
+             },
+             "user_x" => %{
+               "name" => "anton",
+               "uuid" => anton_uuid
+             }
+           } = data
   end
 end

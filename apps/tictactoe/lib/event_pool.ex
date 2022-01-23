@@ -7,7 +7,7 @@ defmodule Tictactoe.EventPool do
 
   @timeout 60_000
 
-  def start_link(_args)  do
+  def start_link(_args) do
     GenServer.start_link(__MODULE__, %__MODULE__{})
   end
 
@@ -33,15 +33,16 @@ defmodule Tictactoe.EventPool do
 
   defp do_process_event(%{__struct__: pipeline} = event) do
     {:ok, pid} = Client.start(pipeline)
+
     case Client.call(pid, event) do
       %ALF.ErrorIP{} = error_event ->
         IO.inspect(error_event)
         Client.stop(pid)
         {:error, :error}
+
       event ->
         Client.stop(pid)
         {:ok, event}
     end
-
   end
 end
