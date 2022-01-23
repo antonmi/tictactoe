@@ -7,9 +7,9 @@ on:
     branches: [ main ]
 
 jobs:
-  postgres-job:
+  build:
+    name: Build and test
     runs-on: ubuntu-latest
-    container: node:latest
     services:
       postgres:
         image: postgres:latest
@@ -26,19 +26,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    steps:
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
-      - name: Query database
-        run: psql -h postgres -d tictactoe_test -U postgres -c 'SELECT 1;'
-        env:
-          PGPASSWORD: postgres
-
-  build:
-    name: Build and test
-    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -53,6 +40,14 @@ jobs:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
+    - name: Install PostgreSQL client
+      run: |
+        apt-get update
+        apt-get install --yes postgresql-client
+    - name: Query database
+      run: psql -h postgres -d tictactoe_test -U postgres -c 'SELECT 1;'
+      env:
+        PGPASSWORD: postgres
     - name: Install dependencies
       run: mix deps.get
     - name: Create DB
