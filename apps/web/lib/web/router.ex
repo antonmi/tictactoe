@@ -7,8 +7,30 @@ defmodule Web.Router do
   plug(:match)
   plug(:dispatch)
 
+  plug Plug.Static,
+       at: "/",
+       from: :web
+
   get "/" do
-    send_resp(conn, 200, "world")
+    conn
+    |> put_resp_content_type("text/html")
+    |> send_file(200, "priv/dist/index.html")
+  end
+
+  get "/js/:path" do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_file(200, "priv/dist/js/#{conn.params["path"]}")
+  end
+
+  get "/img/:path" do
+    conn
+    |> put_resp_content_type("tex/css")
+    |> send_file(200, "priv/dist/img/#{conn.params["path"]}")
+  end
+
+  get "/api/test" do
+    send_resp(conn, 200, "It's ok")
   end
 
   post "/user_enters/:username" do

@@ -8,10 +8,15 @@ defmodule Web.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Web.Router, options: [port: 4001]}
+      {Plug.Cowboy, scheme: :http, plug: Web.Router, options: [port: port()]}
     ]
 
     opts = [strategy: :one_for_one, name: Web.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp port() do
+    (System.get_env("PORT") || "4001")
+    |> String.to_integer()
   end
 end
