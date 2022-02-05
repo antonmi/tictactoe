@@ -2,10 +2,10 @@ defmodule Web.Requests.UserMovesTest do
   use Tictactoe.DataCase
   use Plug.Test
 
-  def post_user_enters(name, params \\ %{}) do
+  def post_user_enters(params) do
     conn =
       :post
-      |> conn("/user_enters/#{name}", params)
+      |> conn("/user_enters", params)
       |> Web.Router.call(%{})
 
     data = Jason.decode!(conn.resp_body)
@@ -13,8 +13,8 @@ defmodule Web.Requests.UserMovesTest do
   end
 
   setup do
-    {anton_token, game_uuid} = post_user_enters("anton")
-    {baton_token, ^game_uuid} = post_user_enters("baton")
+    {anton_token, game_uuid} = post_user_enters(%{username: "anton"})
+    {baton_token, ^game_uuid} = post_user_enters(%{username: "baton"})
     %{anton_token: anton_token, baton_token: baton_token, game_uuid: game_uuid}
   end
 

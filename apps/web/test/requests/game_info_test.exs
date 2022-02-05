@@ -2,9 +2,9 @@ defmodule Web.Requests.GameInfoTest do
   use Tictactoe.DataCase
   use Plug.Test
 
-  def post_user_enters(name, params \\ %{}) do
+  def post_user_enters(params) do
     :post
-    |> conn("/user_enters/#{name}", params)
+    |> conn("/user_enters", params)
     |> Web.Router.call(%{})
   end
 
@@ -15,7 +15,7 @@ defmodule Web.Requests.GameInfoTest do
   end
 
   setup do
-    conn = post_user_enters("anton")
+    conn = post_user_enters(%{username: "anton"})
     data = Jason.decode!(conn.resp_body)
 
     uuid = data["game"]["uuid"]

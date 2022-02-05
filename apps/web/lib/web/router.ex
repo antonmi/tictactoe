@@ -39,7 +39,7 @@ defmodule Web.Router do
     send_resp(conn, 200, "It's ok")
   end
 
-  post "/user_enters/:username" do
+  post "/user_enters" do
     result = UserEnters.call(conn.params["username"], conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
