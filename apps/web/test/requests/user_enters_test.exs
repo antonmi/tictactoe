@@ -17,6 +17,7 @@ defmodule Web.Requests.UserEntersTest do
 
     assert %{
              "token" => uuid,
+             "username" => "anton",
              "game" => %{
                "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
                "status" => "pending",
@@ -42,6 +43,7 @@ defmodule Web.Requests.UserEntersTest do
 
     assert %{
              "token" => uuid,
+             "username" => "anton" <> _,
              "game" => %{
                "field" => [nil, nil, nil, nil, nil, nil, nil, nil, nil],
                "status" => "pending",
