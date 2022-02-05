@@ -15,5 +15,8 @@ export default {
   },
   gameInfo(uuid) {
     return apiClient.get('/game_info/' + uuid)
+  },
+  userMoves(gameUuid, move, token) {
+    return apiClient.post('/user_moves/' + gameUuid + '/' + move, {token: token})
   }
 }

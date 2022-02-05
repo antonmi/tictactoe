@@ -3,10 +3,10 @@
     <h1>Home</h1>
     <div v-if="showGame">
       <p>{{ token }}</p>
-      <CurrentGame :game="game" :token="token"/>
+      <CurrentGame :gameUuid="gameUuid" :token="token"/>
     </div>
     <div v-else>
-      <form @submit.prevent="enterName" class="enter-form">
+      <form @submit.prevent="enterGame" class="enter-form">
         <h3>Enter your name</h3>
         <label for="username">Name:</label>
         <input id="username" v-model="username">
@@ -29,29 +29,30 @@ export default {
   },
   data() {
     return {
-      username: null,
+      username: '',
       token: null,
-      game: null
+      gameUuid: null
     }
   },
   computed: {
     showGame() {
-      console.log(localStorage.gameUuid)
-      return (localStorage.gameUuid ? true : false)
+      return (this.gameUuid ? true : false)
     }
   },
   created() {
-    console.log(localStorage.token)
     this.token = localStorage.token
-    this.enterName()
+    this.username = localStorage.username
+    if (this.token && this.username) {
+      this.enterGame()
+    }
   },
   methods: {
-    enterName() {
+    enterGame() {
       ApiService.userEnters(this.username, this.token)
       .then(response => {
         this.token = localStorage.token = response.data["token"]
         this.username = localStorage.username = response.data["username"]
-        this.game = response.data["game"]
+        this.gameUuid = response.data["game"]["uuid"]
       })
       .catch(error => {
         console.log(error)
