@@ -2,14 +2,14 @@ defmodule Web.Requests.UserEntersTest do
   use Tictactoe.DataCase
   use Plug.Test
 
-  def post_user_enters(params) do
+  def post_user_enters(name, params \\ %{}) do
     :post
-    |> conn("/user_enters", params)
+    |> conn("/user_enters/#{name}", params)
     |> Web.Router.call(%{})
   end
 
   test "user enters" do
-    conn = post_user_enters(%{username: "anton"})
+    conn = post_user_enters("anton")
 
     assert conn.status == 200
 
@@ -33,12 +33,12 @@ defmodule Web.Requests.UserEntersTest do
   end
 
   test "the same user enters twice" do
-    conn = post_user_enters(%{username: "anton"})
+    conn = post_user_enters("anton")
 
     data = Jason.decode!(conn.resp_body)
     token = data["token"]
 
-    conn = post_user_enters(%{username: "anton", token: token})
+    conn = post_user_enters("anton", %{token: token})
     data = Jason.decode!(conn.resp_body)
 
     assert %{
@@ -59,8 +59,8 @@ defmodule Web.Requests.UserEntersTest do
   end
 
   test "2 users enter" do
-    post_user_enters(%{username: "anton"})
-    conn = post_user_enters(%{username: "baton"})
+    post_user_enters("anton")
+    conn = post_user_enters("baton")
 
     assert conn.status == 200
 

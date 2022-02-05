@@ -3,7 +3,7 @@ defmodule Web.UserMoves do
 
   def call(game_uuid, move, token) do
     move = String.to_integer(move)
-IO.inspect({game_uuid, move, token})
+
     case UserMoves.call(game_uuid, move, token) do
       {:ok, result} ->
         result
