@@ -1,9 +1,13 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
     <div v-if="showGame">
-      <p>{{ token }}</p>
-      <CurrentGame :gameUuid="gameUuid" :token="token"/>
+      <h1>{{ username }}</h1>
+      <CurrentGame
+          :gameUuid="gameUuid"
+          :token="token"
+          @game-cancelled="gameCancelled"
+          @next-game="nextGame"
+      />
     </div>
     <div v-else>
       <form @submit.prevent="enterGame" class="enter-form">
@@ -57,7 +61,12 @@ export default {
       .catch(error => {
         console.log(error)
       })
-
+    },
+    gameCancelled() {
+      this.enterGame()
+    },
+    nextGame() {
+      this.enterGame()
     }
   }
 };

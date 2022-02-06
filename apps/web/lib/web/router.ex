@@ -1,7 +1,7 @@
 defmodule Web.Router do
   use Plug.Router
 
-  alias Web.{UserEnters, GameInfo, UserMoves}
+  alias Web.{UserEnters, GameInfo, UserMoves, UserCancelsGame}
 
   plug CORSPlug, origin: &Web.Router.cors/0
   plug Plug.Parsers,
@@ -51,6 +51,11 @@ defmodule Web.Router do
 
   post "/user_moves/:game_uuid/:move" do
     result = UserMoves.call(conn.params["game_uuid"], conn.params["move"], conn.params["token"])
+    send_resp(conn, 200, Jason.encode!(result))
+  end
+
+  post "/user_cancels_game/:game_uuid" do
+    result = UserCancelsGame.call(conn.params["game_uuid"], conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
 
