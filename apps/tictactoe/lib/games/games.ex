@@ -36,10 +36,11 @@ defmodule Tictactoe.Games do
   def find_free_game() do
     Repo.all(
       from(g in Game,
-      where: is_nil(g.user_o_uuid) and g.status == "pending"),
+        where: is_nil(g.user_o_uuid) and g.status == "pending"
+      ),
       limit: 1
     )
-    |> List.first
+    |> List.first()
   end
 
   def assign_second_player(game, user_uuid) do

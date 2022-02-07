@@ -21,5 +21,8 @@ export default {
   },
   userCancelsGame(gameUuid, token) {
     return apiClient.post('/user_cancels_game/' + gameUuid, {token: token})
-  }
+  },
+  userChecksTheirGames(token) {
+    return apiClient.post('/user_checks_their_games', {token: token})
+  },
 }

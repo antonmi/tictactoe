@@ -1,21 +1,30 @@
 defmodule Web.Router do
   use Plug.Router
 
-  alias Web.{UserEnters, GameInfo, UserMoves, UserCancelsGame}
+  alias Web.{
+    UserEnters,
+    GameInfo,
+    UserMoves,
+    UserCancelsGame,
+    UserChecksTheirGames
+  }
 
-  plug CORSPlug, origin: &Web.Router.cors/0
-  plug Plug.Parsers,
-       parsers: [:urlencoded, :multipart, :json],
-       pass: ["*/*"],
-       json_decoder: Jason
+  plug(CORSPlug, origin: &Web.Router.cors/0)
+
+  plug(Plug.Parsers,
+    parsers: [:urlencoded, :multipart, :json],
+    pass: ["*/*"],
+    json_decoder: Jason
+  )
 
   plug(Plug.Logger, log: :debug)
   plug(:match)
   plug(:dispatch)
 
-  plug Plug.Static,
-       at: "/",
-       from: :web
+  plug(Plug.Static,
+    at: "/",
+    from: :web
+  )
 
   get "/" do
     conn
@@ -41,6 +50,11 @@ defmodule Web.Router do
 
   post "/user_enters/:username" do
     result = UserEnters.call(conn.params["username"], conn.params["token"])
+    send_resp(conn, 200, Jason.encode!(result))
+  end
+
+  post "/user_checks_their_games" do
+    result = UserChecksTheirGames.call(conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
 

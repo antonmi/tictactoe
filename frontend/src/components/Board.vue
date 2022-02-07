@@ -29,6 +29,7 @@ export default {
 
 <style>
 .tictactoe-board {
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   width: 204px;

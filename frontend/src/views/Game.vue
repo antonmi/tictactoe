@@ -1,9 +1,15 @@
 <template>
   <div class="current-game">
     <h3>Current Game</h3>
-    <h3>{{ gameUuid }}</h3>
+    <span class="small-uuid">{{ gameUuid }}</span>
+    <div v-if="gameStatus != 'pending'">
+      <h4>You ({{ mySymbol }}) vs {{ opponentName }} ({{ opponentSymbol }})</h4>
+    </div>
+    <div v-else>
+      <h4>Please wait for opponent</h4>
+    </div>
+
     <h3>Status: {{ gameStatus }} </h3>
-    <h4>You ({{ mySymbol }}) playing with {{ opponentName }} ({{ opponentSymbol }})</h4>
     <h1 v-if="myTurn">You turn</h1>
     <h1 v-else>{{ opponentName }}'s turn</h1>
     <Board :field="field" @perform-move="performMove"/>
@@ -27,7 +33,7 @@ import ApiService from "../services/ApiService";
 const pollInterval = 1000
 
 export default {
-  name: "CurrentGame",
+  name: "Game",
   components: {
     Board,
   },
@@ -133,3 +139,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.small-uuid {
+  font-size: 10px;
+}
+</style>

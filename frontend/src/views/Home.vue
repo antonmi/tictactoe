@@ -1,8 +1,8 @@
 <template>
   <div class="home">
+    <h1>{{ username }}</h1>
     <div v-if="showGame">
-      <h1>{{ username }}</h1>
-      <CurrentGame
+      <Game
           :gameUuid="gameUuid"
           :token="token"
           @game-cancelled="gameCancelled"
@@ -24,12 +24,12 @@
 <script>
 // @ is an alias to /src
 import ApiService from "../services/ApiService";
-import CurrentGame from "./CurrentGame";
+import Game from "./Game";
 
 export default {
   name: "Home",
   components: {
-    CurrentGame
+    Game
   },
   data() {
     return {

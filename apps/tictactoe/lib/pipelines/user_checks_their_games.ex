@@ -70,6 +70,7 @@ defmodule Tictactoe.Pipelines.UserChecksTheirGames do
           uuid: game.uuid,
           field: game.field,
           status: game.status,
+          turn_uuid: game.turn_uuid,
           opponent_name: opponent_for_user(game, user, opponents)
         }
       end)
