@@ -84,6 +84,6 @@ defmodule Web.Router do
   end
 
   def cors() do
-    ["http://localhost:8080"]
+    ["http://localhost:8080", ~r/https?.*\.ngrok.io.*/]
   end
 end

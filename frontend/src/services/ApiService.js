@@ -1,13 +1,20 @@
 import axios from "axios";
 
+const apiUrl = () => {
+  let url = process.env.VUE_APP_API_URL ? process.env.VUE_APP_API_URL : 'http://localhost:4001'
+  console.log("API_URL=" + url)
+  return url
+}
+
 const apiClient = axios.create({
-  baseURL: 'http://localhost:4001',
+  baseURL: apiUrl(),
   withCredentials: false,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
   }
 })
+
 
 export default {
   userEnters(name, myUuid) {
