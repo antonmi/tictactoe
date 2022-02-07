@@ -24,7 +24,7 @@
 <script>
 // @ is an alias to /src
 import ApiService from "../services/ApiService";
-import Game from "./Game";
+import Game from "../components/Game";
 
 export default {
   name: "Home",

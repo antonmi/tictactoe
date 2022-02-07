@@ -16,6 +16,9 @@ export default {
   gameInfo(uuid) {
     return apiClient.get('/game_info/' + uuid)
   },
+  showLeaderBoard() {
+    return apiClient.get('/show_leader_board')
+  },
   userMoves(gameUuid, move, myUuid) {
     return apiClient.post('/user_moves/' + gameUuid + '/' + move, {token: myUuid})
   },

@@ -12,6 +12,7 @@
     <h3>Status: {{ gameStatus }} </h3>
     <h1 v-if="myTurn">You turn</h1>
     <h1 v-else>{{ opponentName }}'s turn</h1>
+
     <Board :field="field" @perform-move="performMove"/>
     <div v-if="gameStatus == 'pending'">
       <h4>Please wait for opponent</h4>

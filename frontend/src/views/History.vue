@@ -4,13 +4,13 @@
       <th>Opponent</th>
       <th>Status</th>
     </tr>
-    <HistoryGameItem v-for="game in games" :key="game.uuid" :game="game" />
+    <HistoryGameItem v-for="game in games" :key="game.uuid" :game="game" :myUuid="myUuid" />
   </table>
 </template>
 
 <script>
 import ApiService from "../services/ApiService";
-import HistoryGameItem from "./HistoryGameItem"
+import HistoryGameItem from "../components/HistoryGameItem"
 
 export default {
   name: "History",

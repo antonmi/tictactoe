@@ -2,7 +2,7 @@
   <div id="nav">
     <router-link to="/">Game</router-link> |
     <router-link to="/history">History</router-link> |
-    <router-link to="/leaderboard">Leadboard</router-link>
+    <router-link to="/leaderboard">LeaderBoard</router-link>
   </div>
   <router-view />
 </template>

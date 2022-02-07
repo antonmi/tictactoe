@@ -4,6 +4,7 @@ defmodule Web.Router do
   alias Web.{
     UserEnters,
     GameInfo,
+    ShowLeaderBoard,
     UserMoves,
     UserCancelsGame,
     UserChecksTheirGames
@@ -53,13 +54,18 @@ defmodule Web.Router do
     send_resp(conn, 200, Jason.encode!(result))
   end
 
-  post "/user_checks_their_games" do
-    result = UserChecksTheirGames.call(conn.params["token"])
+  get "/game_info/:uuid" do
+    result = GameInfo.call(conn.params["uuid"])
     send_resp(conn, 200, Jason.encode!(result))
   end
 
-  get "/game_info/:uuid" do
-    result = GameInfo.call(conn.params["uuid"])
+  get "/show_leader_board" do
+    result = ShowLeaderBoard.call()
+    send_resp(conn, 200, Jason.encode!(result))
+  end
+
+  post "/user_checks_their_games" do
+    result = UserChecksTheirGames.call(conn.params["token"])
     send_resp(conn, 200, Jason.encode!(result))
   end
 

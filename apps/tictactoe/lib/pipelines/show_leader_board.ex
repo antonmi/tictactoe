@@ -4,7 +4,8 @@ defmodule Tictactoe.Pipelines.ShowLeaderBoard do
   alias Tictactoe.{User, Users}
 
   defstruct users: nil,
-            users_list: []
+            users_list: [],
+            error: nil
 
   @type t :: %__MODULE__{
           users: list(User.t()),
