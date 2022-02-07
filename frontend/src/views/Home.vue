@@ -4,7 +4,7 @@
     <div v-if="showGame">
       <Game
           :gameUuid="gameUuid"
-          :token="token"
+          :myUuid="myUuid"
           @game-cancelled="gameCancelled"
           @next-game="nextGame"
       />
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       username: '',
-      token: null,
+      myUuid: null,
       gameUuid: null
     }
   },
@@ -44,17 +44,17 @@ export default {
     }
   },
   created() {
-    this.token = localStorage.token
+    this.myUuid = localStorage.myUuid
     this.username = localStorage.username
-    if (this.token && this.username) {
+    if (this.myUuid && this.username) {
       this.enterGame()
     }
   },
   methods: {
     enterGame() {
-      ApiService.userEnters(this.username, this.token)
+      ApiService.userEnters(this.username, this.myUuid)
       .then(response => {
-        this.token = localStorage.token = response.data["token"]
+        this.myUuid = localStorage.myUuid = response.data["token"]
         this.username = localStorage.username = response.data["username"]
         this.gameUuid = response.data["game"]["uuid"]
       })

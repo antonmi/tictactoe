@@ -10,11 +10,11 @@ export default {
   name: "HistoryGameItem",
   props: {
     game: null,
-    token: null
+    myUuid: null
   },
   methods: {
     gameStatus(game) {
-      if (game.status == 'victory' && this.token != game.turn_uuid) {
+      if (game.status == 'victory' && this.myUuid != game.turn_uuid) {
         return "lost"
       }
       return game.status

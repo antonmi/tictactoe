@@ -24,15 +24,15 @@ export default {
     }
   },
   created() {
-    this.token = localStorage.token
+    this.myUuid = localStorage.myUuid
     this.username = localStorage.username
-    if (this.token && this.username) {
+    if (this.myUuid && this.username) {
       this.fetchGamesList()
     }
   },
   methods: {
     fetchGamesList() {
-      ApiService.userChecksTheirGames(this.token)
+      ApiService.userChecksTheirGames(this.myUuid)
       .then(response => {
         this.games = response.data
       })

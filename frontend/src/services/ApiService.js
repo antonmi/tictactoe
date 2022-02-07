@@ -10,19 +10,19 @@ const apiClient = axios.create({
 })
 
 export default {
-  userEnters(name, token) {
-    return apiClient.post('/user_enters/' + name, {token: token})
+  userEnters(name, myUuid) {
+    return apiClient.post('/user_enters/' + name, {token: myUuid})
   },
   gameInfo(uuid) {
     return apiClient.get('/game_info/' + uuid)
   },
-  userMoves(gameUuid, move, token) {
-    return apiClient.post('/user_moves/' + gameUuid + '/' + move, {token: token})
+  userMoves(gameUuid, move, myUuid) {
+    return apiClient.post('/user_moves/' + gameUuid + '/' + move, {token: myUuid})
   },
-  userCancelsGame(gameUuid, token) {
-    return apiClient.post('/user_cancels_game/' + gameUuid, {token: token})
+  userCancelsGame(gameUuid, myUuid) {
+    return apiClient.post('/user_cancels_game/' + gameUuid, {token: myUuid})
   },
-  userChecksTheirGames(token) {
-    return apiClient.post('/user_checks_their_games', {token: token})
+  userChecksTheirGames(myUuid) {
+    return apiClient.post('/user_checks_their_games', {token: myUuid})
   },
 }
