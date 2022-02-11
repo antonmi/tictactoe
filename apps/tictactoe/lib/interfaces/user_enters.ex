@@ -5,10 +5,17 @@ defmodule Tictactoe.Interfaces.UserEnters do
   def call(username, token) do
     case EventPool.process_event(%UserEnters{username: username, token: token}) do
       {:ok, event} ->
-        {:ok,
-         event.game_data
-         |> Map.put(:token, event.token)
-         |> Map.put(:username, event.user.name)}
+        case event.error do
+          nil ->
+            {:ok,
+              event.game_data
+              |> Map.put(:token, event.token)
+              |> Map.put(:username, event.user.name)}
+
+          error ->
+            {:error, error}
+        end
+
 
       {:error, :error} ->
         {:error, :error}

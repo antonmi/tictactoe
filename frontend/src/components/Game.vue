@@ -1,17 +1,15 @@
 <template>
   <div class="current-game">
-    <h3>Current Game</h3>
-    <span class="small-uuid">{{ gameUuid }}</span>
     <div v-if="gameStatus != 'pending'">
-      <h4>You ({{ mySymbol }}) vs {{ opponentName }} ({{ opponentSymbol }})</h4>
+      <h4>{{ myName }} ({{ mySymbol }}) vs {{ opponentName }} ({{ opponentSymbol }})</h4>
     </div>
     <div v-else>
       <h4>Please wait for opponent</h4>
     </div>
 
-    <h3>Status: {{ gameStatus }} </h3>
-    <h1 v-if="myTurn">You turn</h1>
-    <h1 v-else>{{ opponentName }}'s turn</h1>
+    <h4>Game Status: {{ gameStatus }} </h4>
+    <h3 v-if="myTurn">You turn</h3>
+    <h3 v-else>{{ opponentName }}'s turn</h3>
 
     <Board :field="field" @perform-move="performMove"/>
     <div v-if="gameStatus == 'pending'">
@@ -31,7 +29,7 @@
 import Board from "@/components/Board.vue";
 import ApiService from "../services/ApiService";
 
-const pollInterval = 1000
+const pollInterval = 3000
 
 export default {
   name: "Game",

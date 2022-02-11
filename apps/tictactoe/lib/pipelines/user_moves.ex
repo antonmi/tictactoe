@@ -29,7 +29,7 @@ defmodule Tictactoe.Pipelines.UserMoves do
     stage(:find_user_by_token),
     stage(:find_game),
     stage(:check_if_game_active),
-    plug_with(GameMoveAdapter, do: stages_from(GameMove)),
+    plug_with(GameMoveAdapter, [name: :adapter], do: stages_from(GameMove)),
     stage(:check_error_after_move),
     stage(:update_game_record),
     stage(:update_user_scores_if_game_finished),

@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <h1>{{ username }}</h1>
     <div v-if="showGame">
       <Game
           :gameUuid="gameUuid"
@@ -54,9 +53,13 @@ export default {
     enterGame() {
       ApiService.userEnters(this.username, this.myUuid)
       .then(response => {
-        this.myUuid = localStorage.myUuid = response.data["token"]
-        this.username = localStorage.username = response.data["username"]
-        this.gameUuid = response.data["game"]["uuid"]
+        if (response.data.error == 'no_such_user') {
+          localStorage.clear()
+        } else {
+          this.myUuid = localStorage.myUuid = response.data["token"]
+          this.username = localStorage.username = response.data["username"]
+          this.gameUuid = response.data["game"]["uuid"]
+        }
       })
       .catch(error => {
         console.log(error)
