@@ -45,6 +45,12 @@ defmodule Web.Router do
     |> send_file(200, "priv/dist/img/#{conn.params["path"]}")
   end
 
+  get "/favicon.ico" do
+    conn
+    |> put_resp_content_type("tex/css")
+    |> send_file(200, "priv/dist/favicon.ico")
+  end
+
   get "/api/test" do
     send_resp(conn, 200, "It's ok")
   end
@@ -84,6 +90,6 @@ defmodule Web.Router do
   end
 
   def cors() do
-    ["http://localhost:8080", ~r/https?.*\.ngrok.io.*/]
+    [~r/http:\/\/localhost.*/, ~r/https?.*\.ngrok.io.*/]
   end
 end
