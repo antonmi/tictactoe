@@ -38,4 +38,4 @@ Visit ngrok http url
 ```sh
 iex --sname node1@localhost -S mix
 ```
-[Tic-Tac-Toe](tic-tac-toe.png)
+![Tic-Tac-Toe](tic-tac-toe.png)
