@@ -2,8 +2,6 @@
 
 **Multiplayer tic-tac-toe game implemented using the ALF framework**
 
-![alt text](images/bubble_sort.png "Bubble sort")
-
 ### Dev
 Server:
 ```sh
