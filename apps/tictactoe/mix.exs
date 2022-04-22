@@ -26,7 +26,7 @@ defmodule Main.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:alf, "~> 0.4"},
+      {:alf, path: "/Users/anton.mishchukkloeckner.com/elixir/alF"},
       {:ecto_sql, "~> 3.7"},
       {:postgrex, "~> 0.15"}
     ]
