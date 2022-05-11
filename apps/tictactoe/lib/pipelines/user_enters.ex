@@ -95,7 +95,8 @@ defmodule Tictactoe.Pipelines.UserEnters do
     existing_users =
       username
       |> Users.where_name_starts_with()
-      |> Enum.map(&(&1.name))
+      |> Enum.map(& &1.name)
+
     %{event | users_with_the_name: existing_users}
   end
 
