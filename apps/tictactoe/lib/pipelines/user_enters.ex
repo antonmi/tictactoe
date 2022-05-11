@@ -92,7 +92,10 @@ defmodule Tictactoe.Pipelines.UserEnters do
   def if_there_is_game(%__MODULE__{game: %Game{}}, _opts), do: true
 
   def find_users_with_the_name(%__MODULE__{username: username} = event, _opts) do
-    existing_users = Users.where_name_starts_with(username)
+    existing_users =
+      username
+      |> Users.where_name_starts_with()
+      |> Enum.map(&(&1.name))
     %{event | users_with_the_name: existing_users}
   end
 
